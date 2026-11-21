@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển khoản MB Bank</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #0046ad 0%, #002766 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card { background: #ffffff; width: 100%; max-width: 380px; border-radius: 24px; padding: 28px 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); text-align: center; }
+        .bank-badge { display: inline-block; background: #eef4ff; color: #0046ad; font-weight: 700; font-size: 14px; padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
+        .qr-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 12px; margin-bottom: 18px; }
+        .qr-box img { width: 100%; max-width: 240px; height: auto; border-radius: 8px; display: block; margin: 0 auto; }
+        .acc-name { font-size: 18px; font-weight: 700; color: #0f172a; text-transform: uppercase; margin-bottom: 4px; }
+        .acc-num { font-size: 22px; font-weight: 800; color: #0046ad; letter-spacing: 1px; margin-bottom: 20px; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: #0046ad; color: #ffffff; }
+        .btn-secondary { background: #f1f5f9; color: #334155; }
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="bank-badge">NGÂN HÀNG QUÂN ĐỘI (MB BANK)</div>
+    
+    <div class="qr-box">
+        <img id="qrImage" src="" alt="Mã QR MB Bank">
+    </div>
+
+    <div class="acc-name" id="displayName">TÊN CHỦ TÀI KHOẢN</div>
+    <div class="acc-num" id="displayAcc">0000000000</div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="copyAccount()">
+            📋 Sao chép số tài khoản
+        </button>
+        <a id="downloadBtn" class="btn btn-secondary" href="" download="QR_MBBank.png" target="_blank">
+            ⬇️ Lưu ảnh mã QR về máy
+        </a>
+    </div>
+</div>
+
+<div id="toast" class="toast">Đã sao chép số tài khoản!</div>
+
+<script>
+    // ====== CẤU HÌNH THÔNG TIN CỦA BẠN TẠI ĐÂY ======
+    const SO_TAI_KHOAN = "0868963727";       // Thay số tài khoản MB Bank của bạn
+    const TEN_CHU_TK   = "NGO VAN TRUONG ";     // Thay tên chủ tài khoản của bạn
+    // ===============================================
+
+    const qrUrl = `https://img.vietqr.io/image/MB-${SO_TAI_KHOAN}-qr_only.png`;
+    
+    document.getElementById("displayName").innerText = TEN_CHU_TK;
+    document.getElementById("displayAcc").innerText = SO_TAI_KHOAN;
+    document.getElementById("qrImage").src = qrUrl;
+    document.getElementById("downloadBtn").href = qrUrl;
+
+    function copyAccount() {
+        navigator.clipboard.writeText(SO_TAI_KHOAN).then(() => {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
